@@ -1,0 +1,57 @@
+<form method="POST">
+    {% csrf_token %}
+    <h2>Crear un nuevo Formulario</h2>
+    <label for="titulo">Título del Formulario:</label>
+    <input type="text" name="titulo" id="titulo" required><br><br>
+
+    <div id="preguntas-container">
+        <h3>Preguntas</h3>
+        <div class="pregunta-item">
+            <label for="pregunta_1">Pregunta 1:</label>
+            <input type="text" name="preguntas[]" required><br>
+
+            <div class="opciones-container">
+                <h4>Opciones:</h4>
+                <input type="text" name="opciones_1[]" placeholder="Opción 1" required>
+                <input type="radio" name="correcta_1" value="0" required> Correcta<br>
+
+                <input type="text" name="opciones_1[]" placeholder="Opción 2" required>
+                <input type="radio" name="correcta_1" value="1" required> Correcta<br>
+
+                <input type="text" name="opciones_1[]" placeholder="Opción 3" required>
+                <input type="radio" name="correcta_1" value="2" required> Correcta<br>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" onclick="agregarPregunta()">Agregar otra pregunta</button>
+    <button type="submit">Crear Formulario</button>
+</form>
+
+<script>
+    let preguntaCount = 1;
+
+    function agregarPregunta() {
+        preguntaCount++;
+        const preguntasContainer = document.getElementById('preguntas-container');
+        const nuevaPregunta = document.createElement('div');
+        nuevaPregunta.className = 'pregunta-item';
+        nuevaPregunta.innerHTML = `
+            <label for="pregunta_${preguntaCount}">Pregunta ${preguntaCount}:</label>
+            <input type="text" name="preguntas[]" required><br>
+
+            <div class="opciones-container">
+                <h4>Opciones:</h4>
+                <input type="text" name="opciones_${preguntaCount}[]" placeholder="Opción 1" required>
+                <input type="radio" name="correcta_${preguntaCount}" value="0" required> Correcta<br>
+
+                <input type="text" name="opciones_${preguntaCount}[]" placeholder="Opción 2" required>
+                <input type="radio" name="correcta_${preguntaCount}" value="1" required> Correcta<br>
+
+                <input type="text" name="opciones_${preguntaCount}[]" placeholder="Opción 3" required>
+                <input type="radio" name="correcta_${preguntaCount}" value="2" required> Correcta<br>
+            </div>
+        `;
+        preguntasContainer.appendChild(nuevaPregunta);
+    }
+</script>
