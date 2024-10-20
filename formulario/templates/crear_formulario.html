@@ -1,57 +1,147 @@
-<form method="POST">
-    {% csrf_token %}
-    <h2>Crear un nuevo Formulario</h2>
-    <label for="titulo">Título del Formulario:</label>
-    <input type="text" name="titulo" id="titulo" required><br><br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Nuevo Formulario</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .content-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    .content {
+      width: 100%;
+      max-width: 800px;
+    }
+    .pregunta-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .opciones-container {
+      margin-left: 20px;
+    }
+    .form-check {
+      display: flex;
+      align-items: center;
+    }
+    .form-check-label {
+      margin-left: 5px; /* Margen entre opción y etiqueta "Correcta" */
+    }
+    .form-check-input {
+      margin-right: 5px; /* Menor margen entre el radio button y el label "Correcta" */
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="container">
+        <h1 class="mb-4 text-center">Crear un nuevo Formulario</h1>
+        <form method="POST" action="{% url 'guardar_formulario' %}">
+          {% csrf_token %}
 
-    <div id="preguntas-container">
-        <h3>Preguntas</h3>
-        <div class="pregunta-item">
-            <label for="pregunta_1">Pregunta 1:</label>
-            <input type="text" name="preguntas[]" required><br>
+          <div class="form-group">
+            <label for="titulo">Título del Formulario:</label>
+            <input type="text" class="form-control" name="titulo" id="titulo" required>
+          </div>
 
-            <div class="opciones-container">
-                <h4>Opciones:</h4>
-                <input type="text" name="opciones_1[]" placeholder="Opción 1" required>
-                <input type="radio" name="correcta_1" value="0" required> Correcta<br>
+          <div id="preguntas-container">
+            <h3 class="mt-4 mb-3">Preguntas</h3>
+            <div class="pregunta-item">
+              <div class="form-group">
+                <label for="pregunta_1">Pregunta 1:</label>
+                <input type="text" class="form-control" name="preguntas[]" required>
+              </div>
 
-                <input type="text" name="opciones_1[]" placeholder="Opción 2" required>
-                <input type="radio" name="correcta_1" value="1" required> Correcta<br>
-
-                <input type="text" name="opciones_1[]" placeholder="Opción 3" required>
-                <input type="radio" name="correcta_1" value="2" required> Correcta<br>
+              <div class="opciones-container">
+                <h5>Opciones:</h5>
+                <div class="form-check mb-2">
+                  <input type="text" class="form-control mb-2" name="opciones_1[]" placeholder="Opción 1" required>
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" name="correcta_1" value="0" required>
+                    <label class="form-check-label">Correcta</label>
+                  </div>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="text" class="form-control mb-2" name="opciones_1[]" placeholder="Opción 2" required>
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" name="correcta_1" value="1" required>
+                    <label class="form-check-label">Correcta</label>
+                  </div>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="text" class="form-control mb-2" name="opciones_1[]" placeholder="Opción 3" required>
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" name="correcta_1" value="2" required>
+                    <label class="form-check-label">Correcta</label>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary mr-2" onclick="agregarPregunta()">Agregar otra pregunta</button>
+            <button type="submit" class="btn btn-success">Crear Formulario</button>
+            <div class="text-center">
+              <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Volver a la Página Principal</a>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <button type="button" onclick="agregarPregunta()">Agregar otra pregunta</button>
-    <button type="submit">Crear Formulario</button>
-</form>
-
-<script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
     let preguntaCount = 1;
 
     function agregarPregunta() {
-        preguntaCount++;
-        const preguntasContainer = document.getElementById('preguntas-container');
-        const nuevaPregunta = document.createElement('div');
-        nuevaPregunta.className = 'pregunta-item';
-        nuevaPregunta.innerHTML = `
-            <label for="pregunta_${preguntaCount}">Pregunta ${preguntaCount}:</label>
-            <input type="text" name="preguntas[]" required><br>
+      preguntaCount++;
+      const preguntasContainer = document.getElementById('preguntas-container');
+      const nuevaPregunta = document.createElement('div');
+      nuevaPregunta.className = 'pregunta-item';
+      nuevaPregunta.innerHTML = `
+        <div class="form-group">
+          <label for="pregunta_${preguntaCount}">Pregunta ${preguntaCount}:</label>
+          <input type="text" class="form-control" name="preguntas[]" required>
+        </div>
 
-            <div class="opciones-container">
-                <h4>Opciones:</h4>
-                <input type="text" name="opciones_${preguntaCount}[]" placeholder="Opción 1" required>
-                <input type="radio" name="correcta_${preguntaCount}" value="0" required> Correcta<br>
-
-                <input type="text" name="opciones_${preguntaCount}[]" placeholder="Opción 2" required>
-                <input type="radio" name="correcta_${preguntaCount}" value="1" required> Correcta<br>
-
-                <input type="text" name="opciones_${preguntaCount}[]" placeholder="Opción 3" required>
-                <input type="radio" name="correcta_${preguntaCount}" value="2" required> Correcta<br>
+        <div class="opciones-container">
+          <h5>Opciones:</h5>
+          <div class="form-check mb-2">
+            <input type="text" class="form-control mb-2" name="opciones_${preguntaCount}[]" placeholder="Opción 1" required>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" name="correcta_${preguntaCount}" value="0" required>
+              <label class="form-check-label">Correcta</label>
             </div>
-        `;
-        preguntasContainer.appendChild(nuevaPregunta);
+          </div>
+          <div class="form-check mb-2">
+            <input type="text" class="form-control mb-2" name="opciones_${preguntaCount}[]" placeholder="Opción 2" required>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" name="correcta_${preguntaCount}" value="1" required>
+              <label class="form-check-label">Correcta</label>
+            </div>
+          </div>
+          <div class="form-check mb-2">
+            <input type="text" class="form-control mb-2" name="opciones_${preguntaCount}[]" placeholder="Opción 3" required>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" name="correcta_${preguntaCount}" value="2" required>
+              <label class="form-check-label">Correcta</label>
+            </div>
+          </div>
+        </div>
+      `;
+      preguntasContainer.appendChild(nuevaPregunta);
     }
-</script>
+  </script>
+</body>
+</html>

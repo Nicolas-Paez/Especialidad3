@@ -1,47 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del Formulario</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Formulario</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .content-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    .content {
+      width: 100%;
+      max-width: 800px;
+    }
+    .pregunta-item {
+      margin-bottom: 20px;
+    }
+    .opcion-item {
+      margin-left: 20px;
+    }
+    .btn-custom {
+      min-width: 150px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h1>Detalle del Formulario</h1>
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="container">
+        <h1 class="mb-4 text-center">Detalle del Formulario</h1>
         <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ formulario.titulo }}</h5>
-                <p class="card-text"><strong>Descripción:</strong> {{ formulario.descripcion }}</p>
-                <p class="card-text"><strong>Fecha de Creación:</strong> {{ formulario.fecha_creacion }}</p>
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ formulario.titulo }}</h5>
+            <p class="card-text"><strong>Descripción:</strong> {{ formulario.descripcion }}</p>
+            <p class="card-text"><strong>Fecha de Creación:</strong> {{ formulario.fecha_creacion }}</p>
 
-                <h6 class="mt-4">Preguntas del Formulario:</h6>
-                <form method="POST" action="{% url 'responder_formulario' formulario.id %}">
-                    {% csrf_token %}
-                    <ul class="list-group">
-                        {% for pregunta in formulario.preguntas.all %}
-                            <li class="list-group-item">
-                                <strong>{{ pregunta.texto }}</strong><br>
-                                {% for opcion in pregunta.opciones.all %}
-                                    <label>
-                                        <input type="radio" name="pregunta_{{ pregunta.id }}" value="{{ opcion.id }}">
-                                        {{ opcion.texto }}
-                                    </label><br>
-                                {% endfor %}
-                                {% if not pregunta.opciones.exists %}
-                                    <span class="text-muted">No hay opciones para esta pregunta</span>
-                                {% endif %}
-                            </li>
-                        {% empty %}
-                            <li class="list-group-item text-center">No hay preguntas en este formulario</li>
-                        {% endfor %}
-                    </ul>
-                    <button type="submit" class="btn btn-success mt-3">Enviar Respuestas</button>
-                </form>
-                
-                <a href="{% url 'home' %}" class="btn btn-primary mt-3">Volver a la Lista</a>
-            </div>
+            <h6 class="mt-4 mb-3">Preguntas del Formulario:</h6>
+            <form method="POST" action="{% url 'responder_formulario' formulario.id %}">
+              {% csrf_token %}
+              <ul class="list-group">
+                {% for pregunta in formulario.preguntas.all %}
+                  <li class="list-group-item pregunta-item">
+                    <strong>{{ pregunta.texto }}</strong><br>
+                    {% for opcion in pregunta.opciones.all %}
+                      <div class="form-check opcion-item">
+                        <input class="form-check-input" type="radio" name="pregunta_{{ pregunta.id }}" id="opcion_{{ opcion.id }}" value="{{ opcion.id }}">
+                        <label class="form-check-label" for="opcion_{{ opcion.id }}">
+                          {{ opcion.texto }}
+                        </label>
+                      </div>
+                    {% empty %}
+                      <span class="text-muted">No hay opciones para esta pregunta</span>
+                    {% endfor %}
+                  </li>
+                {% empty %}
+                  <li class="list-group-item text-center">No hay preguntas en este formulario</li>
+                {% endfor %}
+              </ul>
+              <div class="text-center mt-4">
+                <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-success btn-custom mr-2">Enviar Respuestas</button>
+                  <a href="{% url 'home' %}" class="btn btn-secondary btn-custom">Volver a la Lista</a>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

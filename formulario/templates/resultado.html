@@ -1,1 +1,51 @@
-<p>Tu nota es: {{ nota }}</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados del Formulario</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .content-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    .content {
+      width: 100%;
+      max-width: 600px;
+    }
+    .result-card {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .result-text {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="container">
+        <h1 class="mb-4 text-center">Resultados del Formulario</h1>
+        <div class="card result-card">
+          <div class="card-body text-center">
+            <h2 class="card-title mb-4">Tu Calificación</h2>
+            <p class="result-text mb-4">Tu nota es: <span class="text-primary">{{ nota }}</span></p>
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Volver al Inicio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
